@@ -8,6 +8,7 @@ mysql 优化
 
 [数据表关系图](https://dev.mysql.com/doc/employee/en/sakila-structure.html)
 
+
 ### departments 部门表
 
 | 字段 | 类型 | 长度 | 备注 |
@@ -62,6 +63,9 @@ mysql 优化
 | from_date | date | 0 | 开始时间(进入该部门时间) |
 | to_date | date | 0 | 结束时间(离开该部门时间) |
 
+## 视图界面
+
+[vue-飞冰](https://github.com/alibaba/ice)
 
 ## 环境说明
 
