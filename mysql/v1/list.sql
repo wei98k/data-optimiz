@@ -10,7 +10,6 @@ select emp.emp_no, emp.first_name, emp.last_name, group_concat(dep.dept_name) fr
 				group by emp.emp_no;
 
 # 求每个部门中money最高的那个人的名字
-# group by emp.emp_no;
 select dept.emp_no, dep.dept_no, dep.dept_name, max(sal.salary) from departments as dep
 	left join dept_emp as dept on dept.dept_no = dep.dept_no
 	left join employees as emp on dept.emp_no = emp.emp_no
