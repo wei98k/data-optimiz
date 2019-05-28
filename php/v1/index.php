@@ -31,16 +31,18 @@ include('./page.class.php');
         <?php 
             // 所有员工
             $sql = "select 
-                    e.emp_no, birth_date, first_name, last_name, gender, hire_date, max(s.salary) as salary,
+                    e.emp_no, birth_date, first_name, last_name, gender, hire_date, s.salary,
                     (select title from titles as t where t.emp_no = e.emp_no order by to_date desc limit 1) as title,
                     (select to_date from titles as t where t.emp_no = e.emp_no order by to_date desc limit 1) as worktime
                     from employees as e";
             // $sql .= " where e.last_name like '%Rem%'";
             $sql .= " left join salaries s on e.emp_no = s.emp_no";
             // $sql .= " having max(s.salary)";
+            $sql .= " group by s.salary"; // 首次耗时 OK, Time: 110.225000s 第二次耗时 OK, Time: 118.427000s
             $sql .= " order by e.birth_date";
             $sql .= " limit 50";
             echo $sql;
+            
             foreach($dbh->query($sql) as $row) {
                 echo '<tr>';
                 echo '<td><a href="./detail.php?empno='.$row ['emp_no'].'"> '. $row ['emp_no'] .'</a></td>';
