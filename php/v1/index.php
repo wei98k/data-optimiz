@@ -21,21 +21,25 @@ include('./page.class.php');
             <th>编号</th>
             <th>first_name</th>
             <th>last_name</th>
+            <th>职称</th>
             <th>性别</th>
             <th>生日</th>
             <th>入职时间</th>
         </tr>
         <?php 
             // 所有员工
-            $sql = "select emp_no, birth_date, first_name, last_name, gender, hire_date from employees";
-            $sql .= " where last_name like '%Rem%'";
-            $sql .= " order by birth_date";
+            $sql = "select e.emp_no, birth_date, first_name, last_name, gender, hire_date, title from employees as e";
+            $sql .= " left join titles as t";
+            $sql .= " on t.emp_no = e.emp_no";
+            $sql .= " where e.last_name like '%Rem%'";
+            $sql .= " order by e.birth_date";
             $sql .= " limit 20";
             foreach($dbh->query($sql) as $row) {
                 echo '<tr>';
-                echo '<td>'. $row ['emp_no'] .'</td>';
+                echo '<td><a href="./detail.php?empno='.$row ['emp_no'].'"> '. $row ['emp_no'] .'</a></td>';
                 echo '<td>'. $row ['first_name'] .'</td>';
                 echo '<td>'. $row ['last_name'] .'</td>';
+                echo '<td>'. $row ['title'] .'</td>';
                 echo '<td>'. $row ['gender'] .'</td>';
                 echo '<td>'. $row ['birth_date'] .'</td>';
                 echo '<td>'. $row ['hire_date'] .'</td>';
