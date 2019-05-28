@@ -36,9 +36,9 @@ include('./page.class.php');
                     (select to_date from titles as t where t.emp_no = e.emp_no order by to_date desc limit 1) as worktime
                     from employees as e";
             // $sql .= " where e.last_name like '%Rem%'";
-            $sql .= " left join salaries s on e.emp_no = s.emp_no";
+            $sql .= " left join (select emp_no, salary from salaries group by emp_no ) as s on e.emp_no = s.emp_no"; // 如何取当前或最收入最高的工资?
             // $sql .= " having max(s.salary)";
-            $sql .= " group by s.salary"; // 首次耗时 OK, Time: 110.225000s 第二次耗时 OK, Time: 118.427000s
+            // $sql .= " group by s.salary"; // s.salary 首次耗时 OK, Time: 110.225000s 第二次耗时 OK, Time: 118.427000s   使用字段 e.emp_no  OK, Time: 15.117000s
             $sql .= " order by e.birth_date";
             $sql .= " limit 50";
             echo $sql;
