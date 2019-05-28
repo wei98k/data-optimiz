@@ -22,24 +22,33 @@ include('./page.class.php');
             <th>first_name</th>
             <th>last_name</th>
             <th>职称</th>
+            <th>在职</th>
             <th>性别</th>
             <th>生日</th>
             <th>入职时间</th>
         </tr>
         <?php 
             // 所有员工
-            $sql = "select e.emp_no, birth_date, first_name, last_name, gender, hire_date, title from employees as e";
-            $sql .= " left join titles as t";
-            $sql .= " on t.emp_no = e.emp_no";
-            $sql .= " where e.last_name like '%Rem%'";
+            $sql = "select 
+                    e.emp_no, birth_date, first_name, last_name, gender, hire_date, 
+                    (select title from titles as t where t.emp_no = e.emp_no order by to_date desc limit 1) as title,
+                    (select to_date from titles as t where t.emp_no = e.emp_no order by to_date desc limit 1) as worktime
+                    from employees as e";
+            // $sql .= " where e.last_name like '%Rem%'";
             $sql .= " order by e.birth_date";
             $sql .= " limit 20";
+            // echo $sql;
             foreach($dbh->query($sql) as $row) {
                 echo '<tr>';
                 echo '<td><a href="./detail.php?empno='.$row ['emp_no'].'"> '. $row ['emp_no'] .'</a></td>';
                 echo '<td>'. $row ['first_name'] .'</td>';
                 echo '<td>'. $row ['last_name'] .'</td>';
                 echo '<td>'. $row ['title'] .'</td>';
+                if($row ['worktime'] == '9999-01-01') {
+                    echo '<td>'. '是' .'</td>';
+                } else {
+                    echo '<td>'. '否' .'</td>';
+                }
                 echo '<td>'. $row ['gender'] .'</td>';
                 echo '<td>'. $row ['birth_date'] .'</td>';
                 echo '<td>'. $row ['hire_date'] .'</td>';
