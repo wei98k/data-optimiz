@@ -1,6 +1,7 @@
 <?php
 // 实现员工列表
 require_once('./db.php');
+include('./page.class.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,15 +16,34 @@ require_once('./db.php');
         <?php include('./left.php'); ?>
     </div>
     <div class="main">
+    <table border=1>
+        <tr>
+            <th>编号</th>
+            <th>first_name</th>
+            <th>last_name</th>
+            <th>性别</th>
+            <th>生日</th>
+            <th>入职时间</th>
+        </tr>
         <?php 
             // 所有员工
-            $sql = "select emp_no, birth_date, first_name, last_name, gender, hire_date from employees limit 1000";
+            $sql = "select emp_no, birth_date, first_name, last_name, gender, hire_date from employees";
+            $sql .= " where last_name like '%Rem%'";
+            $sql .= " order by birth_date";
+            $sql .= " limit 20";
             foreach($dbh->query($sql) as $row) {
-                echo 'emp_no:' . $row ['emp_no'];
-                echo PHP_EOL;
+                echo '<tr>';
+                echo '<td>'. $row ['emp_no'] .'</td>';
+                echo '<td>'. $row ['first_name'] .'</td>';
+                echo '<td>'. $row ['last_name'] .'</td>';
+                echo '<td>'. $row ['gender'] .'</td>';
+                echo '<td>'. $row ['birth_date'] .'</td>';
+                echo '<td>'. $row ['hire_date'] .'</td>';
+                echo '</tr>';
             }
             
         ?>
+        </table>
     </div>
 </body>
 </html>
